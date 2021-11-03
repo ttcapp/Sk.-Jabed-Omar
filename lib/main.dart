@@ -1,17 +1,40 @@
 import 'package:flutter/material.dart';
-
+import 'package:jewel_demo/profile.dart';
+import 'package:slide_drawer/slide_drawer.dart';
 void main() {
   runApp(MyApp());
 }
+
 double conheight=100;
 double conwidth=100;
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
 
+  MyApp({Key? key}) : super(key: key);
+
+  final navigatorKey= GlobalKey<NavigatorState>();
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: MyHomePage(),
+      navigatorKey: navigatorKey,
+      home: SlideDrawer(
+        backgroundColor: Colors.green.shade700,
+        items: [
+          MenuItem('Home',icon: Icons.account_balance,
+              onTap: (){}),
+          MenuItem('Project',icon: Icons.ac_unit ,
+              onTap: (){}),
+          MenuItem('Favourite',icon: Icons.add_to_photos,
+              onTap: (){}),
+          MenuItem('Profile',icon: Icons.work,
+              onTap: (){
+            navigatorKey.currentState!.
+            push(MaterialPageRoute(builder: (context)=>Profile()));
+              }),
+          MenuItem('Setting',icon: Icons.account_circle_rounded,
+              onTap: (){}),
+        ],
+        child: MyHomePage(),
+      ),
     );
   }
 }
@@ -28,6 +51,12 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.menu),
+          // call toggle from SlideDrawer to alternate between open and close
+          // when pressed menu button
+          onPressed: () => SlideDrawer.of(context)!.toggle(),
+        ),
         title: Text("App Bar"),
       ),
       body: SingleChildScrollView(
